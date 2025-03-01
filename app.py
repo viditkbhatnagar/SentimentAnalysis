@@ -1,14 +1,13 @@
 import os
-# Ensure your file is not named "whisper.py" to avoid conflicts!
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 import streamlit as st
 import json
 import nltk
+import whisper
 import tempfile
 import plotly.express as px
 from transformers import pipeline, AutoTokenizer
-import whisper  # Make sure this is OpenAI's Whisper (pip install openai-whisper)
 
 # Download required NLTK resources
 nltk.download('punkt')
@@ -61,9 +60,11 @@ def extract_salesperson_text(transcript):
     """
     Extracts counselor dialogue based on explicit labels or if the line contains counselor keywords.
     """
-    counselor_keywords = ["university", "education", "programme", "mba", "fees", 
-                          "payment", "registration", "international", "linkedin", 
-                          "profile", "consultancy", "call", "whatsapp"]
+    counselor_keywords = [
+        "university", "education", "programme", "mba", "fees", 
+        "payment", "registration", "international", "linkedin", 
+        "profile", "consultancy", "call", "whatsapp"
+    ]
     counselor_lines = []
     for line in transcript.splitlines():
         line_stripped = line.strip()
@@ -138,7 +139,8 @@ def analyze_salesperson(text, scaling=RATING_SCALING):
 def evaluate_salesperson_performance_extended(text):
     """
     Provides aggregated feedback for the counselor based on the entire text.
-    Instead of line-specific feedback, it aggregates key metrics to produce summary feedback.
+    Aggregates metrics like overall filler word usage, average sentence length, vocabulary diversity,
+    and overall sentiment to produce summary feedback.
     """
     filler_words = ["like", "um", "uh", "you know"]
     total_filler = sum(text.lower().count(word) for word in filler_words)
@@ -344,7 +346,7 @@ if uploaded_file is not None:
     st.subheader("Full Transcript")
     st.text_area("Transcript", transcript, height=300)
     
-    # Perform analysis in the background
+    # Perform analysis in the background (results not displayed in UI, but available in logs if needed)
     results_json = process_transcript(transcript)
     results = json.loads(results_json)
     
