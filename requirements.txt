@@ -2,6 +2,5 @@ streamlit
 nltk
 torch>=1.13.0
 transformers
-openai-whisper  # unpinned so pip can find a compatible version
+openai-whisper
 plotly
-ffmeg
