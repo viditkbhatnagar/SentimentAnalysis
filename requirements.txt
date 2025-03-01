@@ -4,3 +4,4 @@ torch>=1.13.0
 transformers
 whisper
 plotly
+openai-whisper

@@ -1,13 +1,14 @@
 import os
+# Ensure your file is not named "whisper.py" to avoid conflicts!
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 import streamlit as st
 import json
 import nltk
-import whisper
 import tempfile
 import plotly.express as px
 from transformers import pipeline, AutoTokenizer
+import whisper  # Make sure this is OpenAI's Whisper (pip install openai-whisper)
 
 # Download required NLTK resources
 nltk.download('punkt')
@@ -36,7 +37,6 @@ def split_text_into_chunks(text, max_tokens=512):
 # ================================
 # ANALYSIS FUNCTIONS (Using transformers for sentiment)
 # ================================
-
 def extract_student_text(transcript):
     """
     Extracts student lines.
@@ -61,11 +61,9 @@ def extract_salesperson_text(transcript):
     """
     Extracts counselor dialogue based on explicit labels or if the line contains counselor keywords.
     """
-    counselor_keywords = [
-        "university", "education", "programme", "mba", "fees",
-        "payment", "registration", "international", "linkedin",
-        "profile", "consultancy", "call", "whatsapp"
-    ]
+    counselor_keywords = ["university", "education", "programme", "mba", "fees", 
+                          "payment", "registration", "international", "linkedin", 
+                          "profile", "consultancy", "call", "whatsapp"]
     counselor_lines = []
     for line in transcript.splitlines():
         line_stripped = line.strip()
@@ -140,22 +138,14 @@ def analyze_salesperson(text, scaling=RATING_SCALING):
 def evaluate_salesperson_performance_extended(text):
     """
     Provides aggregated feedback for the counselor based on the entire text.
-    Instead of line-specific feedback, this function aggregates key metrics (overall filler word usage,
-    average sentence length, vocabulary diversity, and overall sentiment) to produce summary feedback.
+    Instead of line-specific feedback, it aggregates key metrics to produce summary feedback.
     """
-    # Overall filler words count
     filler_words = ["like", "um", "uh", "you know"]
     total_filler = sum(text.lower().count(word) for word in filler_words)
-    
-    # Average sentence length
     sentences = nltk.sent_tokenize(text)
     avg_sentence_length = sum(len(s.split()) for s in sentences) / len(sentences) if sentences else 0
-    
-    # Vocabulary diversity
     tokens = nltk.word_tokenize(text.lower())
     vocabulary_diversity = len(set(tokens)) / len(tokens) if tokens else 0
-    
-    # Overall sentiment for counselor text
     overall_sentiment, _, comp = analyze_sentiment(text)
     
     improvements = []
