@@ -62,8 +62,8 @@ def extract_salesperson_text(transcript):
     Extracts counselor dialogue based on explicit labels or if the line contains counselor keywords.
     """
     counselor_keywords = [
-        "university", "education", "programme", "mba", "fees", 
-        "payment", "registration", "international", "linkedin", 
+        "university", "education", "programme", "mba", "fees",
+        "payment", "registration", "international", "linkedin",
         "profile", "consultancy", "call", "whatsapp"
     ]
     counselor_lines = []
@@ -140,8 +140,8 @@ def analyze_salesperson(text, scaling=RATING_SCALING):
 def evaluate_salesperson_performance_extended(text):
     """
     Provides aggregated feedback for the counselor based on the entire text.
-    Instead of line-specific feedback, this function aggregates key metrics such as overall filler word usage,
-    average sentence length, vocabulary diversity, and overall sentiment to produce a summary of strengths and areas to improve.
+    Instead of line-specific feedback, this function aggregates key metrics (overall filler word usage,
+    average sentence length, vocabulary diversity, and overall sentiment) to produce summary feedback.
     """
     # Overall filler words count
     filler_words = ["like", "um", "uh", "you know"]
@@ -174,7 +174,7 @@ def evaluate_salesperson_performance_extended(text):
     if vocabulary_diversity < 0.3:
         improvements.append("Vocabulary diversity is low.")
     else:
-        praises.append("Good vocabulary diversity.")
+        praises.append("Good vocabulary diversity observed.")
     
     if comp < -0.2:
         improvements.append("Overall negative sentiment detected. Tone may need improvement.")
@@ -388,7 +388,7 @@ if uploaded_file is not None:
     else:
         st.markdown("None")
         
-    st.markdown("### Course Suggestions (For Student)")
+    st.markdown("#### Course Suggestions (For Student)")
     if results["suggestions"]:
         for item in results["suggestions"]:
             st.markdown(f"- {item}")
