@@ -1,5 +1,6 @@
 streamlit
 nltk
-whisper
+torch>=1.10.0
 transformers
+whisper
 plotly
