@@ -1,6 +1,6 @@
 streamlit
 nltk
-torch>=1.10.0
+torch>=1.13.0
 transformers
 whisper
 plotly
