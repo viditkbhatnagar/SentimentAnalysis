@@ -2,5 +2,5 @@ streamlit
 nltk
 torch>=1.13.0
 transformers
-openai-whisper
+replicate
 plotly
